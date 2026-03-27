@@ -130,3 +130,24 @@ def test_correct_selected_choices():
     result = question.correct_selected_choices(selected)
 
     assert result == [choice1.id, choice3.id] 
+
+
+
+@pytest.fixture
+def sample_question():
+    question = Question(title="Capital de Minas Gerais?", max_selections=2)
+
+    c1 = question.add_choice("Belo Horizonte", True)
+    c2 = question.add_choice("Rio de Janeiro", False)
+    c3 = question.add_choice("São Paulo", True)
+
+    return question 
+
+def test_sample_question_has_three_choices(sample_question):
+    assert len(sample_question.choices) == 3
+
+def test_correct_selected_choices_exceeds_max(sample_question):
+    selected_ids = [choice.id for choice in sample_question.choices]
+
+    with pytest.raises(Exception):
+        sample_question.correct_selected_choices(selected_ids)
